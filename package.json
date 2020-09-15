@@ -67,6 +67,7 @@
     "sass-loader": "^8.0.2",
     "standard-version": "^8.0.1",
     "style-loader": "^1.2.1",
+    "survey-pdf": "^1.8.2",
     "surveyjs-doc-generator": "git+https://github.com/surveyjs/surveyjs-doc-generator.git",
     "testcafe": "^1.9.2",
     "ts-loader": "^7.0.5",

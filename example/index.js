@@ -22,30 +22,30 @@ if (!window["%hammerhead%"]) {
   // SurveyCreator.StylesManager.applyTheme("winter");
 
   //color customization
-  var mainColor = "#0065FF";
-  var mainHoverColor = "#60C5FB";
-  var textColor = "#4a4a4a";
-  var headerColor = "#4a4a4a";
-  var headerBackgroundColor = "#4a4a4a";
-  var bodyContainerBackgroundColor = "#f8f8f8";
+  // var mainColor = "#0065FF";
+  // var mainHoverColor = "#60C5FB";
+  // var textColor = "#4a4a4a";
+  // var headerColor = "#4a4a4a";
+  // var headerBackgroundColor = "#4a4a4a";
+  // var bodyContainerBackgroundColor = "#f8f8f8";
 
-  var defaultThemeColorsSurvey = Survey.StylesManager.ThemeColors["default"];
-  defaultThemeColorsSurvey["$main-color"] = mainColor;
-  defaultThemeColorsSurvey["$main-hover-color"] = mainHoverColor;
-  defaultThemeColorsSurvey["$text-color"] = textColor;
-  defaultThemeColorsSurvey["$header-color"] = headerColor;
-  defaultThemeColorsSurvey["$header-background-color"] = headerBackgroundColor;
-  defaultThemeColorsSurvey[
-    "$body-container-background-color"
-  ] = bodyContainerBackgroundColor;
+  // var defaultThemeColorsSurvey = Survey.StylesManager.ThemeColors["default"];
+  // defaultThemeColorsSurvey["$main-color"] = mainColor;
+  // defaultThemeColorsSurvey["$main-hover-color"] = mainHoverColor;
+  // defaultThemeColorsSurvey["$text-color"] = textColor;
+  // defaultThemeColorsSurvey["$header-color"] = headerColor;
+  // defaultThemeColorsSurvey["$header-background-color"] = headerBackgroundColor;
+  // defaultThemeColorsSurvey[
+  //   "$body-container-background-color"
+  // ] = bodyContainerBackgroundColor;
 
-  var defaultThemeColorsEditor =
-    SurveyCreator.StylesManager.ThemeColors["default"];
-  defaultThemeColorsEditor["$primary-color"] = mainColor;
-  defaultThemeColorsEditor["$secondary-color"] = mainColor;
-  defaultThemeColorsEditor["$primary-hover-color"] = mainHoverColor;
-  defaultThemeColorsEditor["$primary-text-color"] = textColor;
-  defaultThemeColorsEditor["$selection-border-color"] = mainColor;
+  // var defaultThemeColorsEditor =
+  //   SurveyCreator.StylesManager.ThemeColors["default"];
+  // defaultThemeColorsEditor["$primary-color"] = mainColor;
+  // defaultThemeColorsEditor["$secondary-color"] = mainColor;
+  // defaultThemeColorsEditor["$primary-hover-color"] = mainHoverColor;
+  // defaultThemeColorsEditor["$primary-text-color"] = textColor;
+  // defaultThemeColorsEditor["$selection-border-color"] = mainColor;
 
   Survey.StylesManager.applyTheme();
   SurveyCreator.StylesManager.applyTheme();
@@ -54,34 +54,69 @@ if (!window["%hammerhead%"]) {
   SurveyCreator.SurveyJSONEditor.aceBasePath = "https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.10/";
 
 
-  var options = {
-    questionTypes: [
-      "text",
-      "checkbox",
-      "radiogroup",
-      "dropdown",
-      "comment",
-      "rating",
-      "imagepicker",
-      "boolean",
-      "html",
-      "file",
-      "expression"
-    ],
-    pageEditMode: "single"
+  // var options = {
+  //   questionTypes: [
+  //     "text",
+  //     "checkbox",
+  //     "radiogroup",
+  //     "dropdown",
+  //     "comment",
+  //     "rating",
+  //     "imagepicker",
+  //     "boolean",
+  //     "html",
+  //     "file",
+  //     "expression"
+  //   ],
+  //   pageEditMode: "single"
+  // };
+
+  Survey.Serializer.addProperty("survey", {
+    name: "pdfFontSize:number",
+    category: "PDF",
+    default: SurveyPDF.DocOptions.FONT_SIZE,
+    isSerializable: false
+  });
+  //pdfMode
+
+  var creator = new SurveyCreator.SurveyCreator("editorElement" /*, options*/);
+
+  var savePdfCallback = function() {
+    var options = {
+      fontSize: creator.survey.pdfFontSize
+    };
+    var surveyPDF = new SurveyPDF.SurveyPDF(creator.JSON, options);
+    surveyPDF.data = creator.surveyLiveTester.survey.data;
+    surveyPDF.save("filename");
   };
-  var creator = new SurveyCreator.SurveyCreator("editorElement", options);
-  creator.showToolbox = "right";
-  creator.showPropertyGrid = "right";
-  creator.rightContainerActiveItem("toolbox");
-  creator.toolbarItems.splice(2, 5);
-  creator.placeholderHtml = `
-    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-      <img src="./drag-image.svg"/>
-      <div style="font-size: 16px; max-width: 210px;">
-        Drag and drop a question to start designing your form
-      </div>
-    </div>`;
+
+  creator.surveyLiveTester.toolbarItems.push({
+    id: "svd-save-pdf",
+    // title: getLocString("pe.simulator"),
+    title: "Save PDF",
+    // visible: ko.computed(() => this.simulatorEnabled),
+    visible: true,
+    // tooltip: getLocString("pe.simulator"),
+    toolpit: "Save PDF",
+    component: "svd-button",
+    // action: ko.computed({
+    //   read: () => this.koActiveDevice(),
+    //   write: (val: any) => this.koActiveDevice(val)
+    // }),
+    action: savePdfCallback
+  });
+
+  // creator.showToolbox = "right";
+  // creator.showPropertyGrid = "right";
+  // creator.rightContainerActiveItem("toolbox");
+  // creator.toolbarItems.splice(2, 5);
+  // creator.placeholderHtml = `
+  //   <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+  //     <img src="./drag-image.svg"/>
+  //     <div style="font-size: 16px; max-width: 210px;">
+  //       Drag and drop a question to start designing your form
+  //     </div>
+  //   </div>`;
 
   creator.saveSurveyFunc = function(saveNo, callback) {
     alert("ok");
