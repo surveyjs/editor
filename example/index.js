@@ -71,13 +71,23 @@ if (!window["%hammerhead%"]) {
   //   pageEditMode: "single"
   // };
 
-  Survey.Serializer.addProperty("survey", {
-    name: "pdfFontSize:number",
-    category: "PDF",
-    default: SurveyPDF.DocOptions.FONT_SIZE,
-    isSerializable: false
-  });
-  //pdfMode
+  Survey.Serializer.addProperties("survey",
+    [
+      {
+        name: "pdfFontSize:number",
+        category: "PDF",
+        default: SurveyPDF.DocOptions.FONT_SIZE,
+        isSerializable: false
+      },
+      {
+        name: "pdfMode",
+        category: "PDF",
+        default: "edit",
+        choices: ["edit", "display"],
+        isSerializable: false
+      }
+    ]
+  );
 
   var creator = new SurveyCreator.SurveyCreator("editorElement" /*, options*/);
 
@@ -87,6 +97,7 @@ if (!window["%hammerhead%"]) {
     };
     var surveyPDF = new SurveyPDF.SurveyPDF(creator.JSON, options);
     surveyPDF.data = creator.surveyLiveTester.survey.data;
+    surveyPDF.mode = creator.survey.pdfMode;
     surveyPDF.save("filename");
   };
 
