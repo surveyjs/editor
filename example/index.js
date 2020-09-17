@@ -83,8 +83,8 @@ if (!window["%hammerhead%"]) {
       {
         name: "pdfFormatType",
         category: "PDF",
-        default: "a4",
-        choices: ["custom", "a0", "a1", "a2", "a3",
+        default: "default",
+        choices: ["custom", "default", "a0", "a1", "a2", "a3",
           "a4", "a5", "a6", "a7", "a8", "a9", "a10",
           "b0", "b1", "b2", "b3", "b4", "b5", "b6",
           "b7", "b8", "b9", "b10", "c0", "c1", "c2",
@@ -169,12 +169,12 @@ if (!window["%hammerhead%"]) {
     if (creator.survey.pdfOrientation !== "auto") {
       options.orientation = creator.survey.pdfOrientation;
     }
-    if (creator.survey.pdfFormatType !== "custom") {
-      options.format = creator.survey.pdfFormatType;
-    }
-    else {
+    if (creator.survey.pdfFormatType === "custom") {
       options.format =
         [creator.survey.pdfFormatWidth, creator.survey.pdfFormatHeight]
+    }
+    else if (creator.survey.pdfFormatType !== "default") {
+      options.format = creator.survey.pdfFormatType;
     }
     var surveyPDF = new SurveyPDF.SurveyPDF(creator.JSON, options);
     surveyPDF.data = creator.surveyLiveTester.survey.data;
