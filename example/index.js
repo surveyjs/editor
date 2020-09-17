@@ -74,9 +74,74 @@ if (!window["%hammerhead%"]) {
   Survey.Serializer.addProperties("survey",
     [
       {
+        name: "pdfOrientation",
+        category: "PDF",
+        default: "auto",
+        choices: ["auto", "portrait", "landscape"],
+        isSerializable: false
+      },
+      {
+        name: "pdfFormatType",
+        category: "PDF",
+        default: "a4",
+        choices: ["custom", "a0", "a1", "a2", "a3",
+          "a4", "a5", "a6", "a7", "a8", "a9", "a10",
+          "b0", "b1", "b2", "b3", "b4", "b5", "b6",
+          "b7", "b8", "b9", "b10", "c0", "c1", "c2",
+          "c3", "c4", "c5", "c6", "c7", "c8", "c9",
+          "c10", "dl", "letter", "government-letter",
+          "legal", "junior-legal", "ledger", "tabloid",
+          "credit-card"],
+        isSerializable: false
+      },
+      {
+        name: "pdfFormatWidth:number",
+        category: "PDF",
+        default: 210.0,
+        dependsOn: "pdfFormatType",
+        visibleIf: function (obj) {
+          return obj.pdfFormatType === "custom";
+        },
+        isSerializable: false
+      },
+      {
+        name: "pdfFormatHeight:number",
+        category: "PDF",
+        default: 297.0,
+        dependsOn: "pdfFormatType",
+        visibleIf: function (obj) {
+          return obj.pdfFormatType === "custom";
+        },
+        isSerializable: false
+      },
+      {
         name: "pdfFontSize:number",
         category: "PDF",
         default: SurveyPDF.DocOptions.FONT_SIZE,
+        isSerializable: false
+      },
+      {
+        name: "pdfMarginTop:number",
+        category: "PDF",
+        default: 10.0,
+        isSerializable: false
+      },
+      {
+        name: "pdfMarginBottom:number",
+        category: "PDF",
+        default: 10.0,
+        isSerializable: false
+      },
+      {
+        name: "pdfMarginLeft:number",
+        category: "PDF",
+        default: 10.0,
+        isSerializable: false
+      },
+      {
+        name: "pdfMarginRight:number",
+        category: "PDF",
+        default: 10.0,
         isSerializable: false
       },
       {
@@ -93,8 +158,24 @@ if (!window["%hammerhead%"]) {
 
   var savePdfCallback = function() {
     var options = {
-      fontSize: creator.survey.pdfFontSize
+      fontSize: creator.survey.pdfFontSize,
+      margins: {
+        left: creator.survey.pdfMarginLeft,
+        right: creator.survey.pdfMarginRight,
+        top: creator.survey.pdfMarginTop,
+        bot: creator.survey.pdfMarginBottom
+      }
     };
+    if (creator.survey.pdfOrientation !== "auto") {
+      options.orientation = creator.survey.pdfOrientation;
+    }
+    if (creator.survey.pdfFormatType !== "custom") {
+      options.format = creator.survey.pdfFormatType;
+    }
+    else {
+      options.format =
+        [creator.survey.pdfFormatWidth, creator.survey.pdfFormatHeight]
+    }
     var surveyPDF = new SurveyPDF.SurveyPDF(creator.JSON, options);
     surveyPDF.data = creator.surveyLiveTester.survey.data;
     surveyPDF.mode = creator.survey.pdfMode;
