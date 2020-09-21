@@ -121,6 +121,12 @@ if (!window["%hammerhead%"]) {
         isSerializable: false
       },
       {
+        name: "pdfFontName:string",
+        category: "PDF",
+        default: 'segoe',
+        isSerializable: false
+      },
+      {
         name: "pdfMarginTop:number",
         category: "PDF",
         default: 10.0,
@@ -145,26 +151,62 @@ if (!window["%hammerhead%"]) {
         isSerializable: false
       },
       {
+        name: "pdfHtmlRenderAs",
+        category: "PDF",
+        default: "auto",
+        choices: ["auto", "standard", "image"],
+        isSerializable: false
+      },
+      {
+        name: "pdfMatrixRenderAs",
+        category: "PDF",
+        default: "auto",
+        choices: ["auto", "list"],
+        isSerializable: false
+      },
+      {
+        name: "pdfCompress:boolean",
+        category: "PDF",
+        default: false,
+        isSerializable: false
+      },
+      {
         name: "pdfMode",
         category: "PDF",
         default: "edit",
         choices: ["edit", "display"],
         isSerializable: false
+      },
+      {
+        name: "pdfFileName:string",
+        category: "PDF",
+        default: 'survey_result.pdf',
+        isSerializable: false
       }
     ]
   );
+  Survey.Serializer.addProperty("question", {
+    name: "pdfIsPageBreak:boolean",
+    category: "PDF",
+    default: false
+  });
+  Survey.Serializer.findProperty("html", "renderAs").category = "PDF";
 
   var creator = new SurveyCreator.SurveyCreator("editorElement" /*, options*/);
 
   var savePdfCallback = function() {
     var options = {
       fontSize: creator.survey.pdfFontSize,
+      fontName: creator.survey.pdfFontName,
       margins: {
         left: creator.survey.pdfMarginLeft,
         right: creator.survey.pdfMarginRight,
         top: creator.survey.pdfMarginTop,
         bot: creator.survey.pdfMarginBottom
-      }
+      },
+      htmlRenderAs: creator.survey.pdfHtmlRenderAs,
+      matrixRenderAs: creator.survey.pdfMatrixRenderAs,
+      compress: creator.survey.pdfCompress
     };
     if (creator.survey.pdfOrientation !== "auto") {
       options.orientation = creator.survey.pdfOrientation;
@@ -179,7 +221,10 @@ if (!window["%hammerhead%"]) {
     var surveyPDF = new SurveyPDF.SurveyPDF(creator.JSON, options);
     surveyPDF.data = creator.surveyLiveTester.survey.data;
     surveyPDF.mode = creator.survey.pdfMode;
-    surveyPDF.save("filename");
+    surveyPDF.onRenderQuestion.add(function(_, options) {
+      options.bricks[0].isPageBreak = options.question.pdfIsPageBreak;
+    });
+    surveyPDF.save(creator.survey.pdfFileName);
   };
 
   creator.surveyLiveTester.toolbarItems.push({
