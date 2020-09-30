@@ -191,6 +191,8 @@ if (!window["%hammerhead%"]) {
     default: false
   });
   Survey.Serializer.findProperty("html", "renderAs").category = "PDF";
+  Survey.Serializer.findProperty("matrix", "renderAs").category = "PDF";
+  Survey.Serializer.findProperty("matrixdropdown", "renderAs").category = "PDF";
 
   var creator = new SurveyCreator.SurveyCreator("editorElement" /*, options*/);
 
