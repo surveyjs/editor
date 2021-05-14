@@ -4,7 +4,6 @@ import { ImplementorBase } from "survey-knockout-ui";
 import { Base } from "survey-core";
 import "./translation.scss";
 var templateHtml = require("./translation.html");
-var groupTemplateHtml = require("./translation-group.html");
 
 ko.components.register("svc-tab-translation", {
   viewModel: {
@@ -15,16 +14,7 @@ ko.components.register("svc-tab-translation", {
         new ImplementorBase(obj);
       };
       return plugin.model;
-    },
+    }
   },
-  template: templateHtml,
-});
-ko.components.register("svd-translation-group", {
-  viewModel: {
-    createViewModel: (params, componentInfo) => {
-      var model = params.model;
-      return model;
-    },
-  },
-  template: groupTemplateHtml,
+  template: templateHtml
 });
