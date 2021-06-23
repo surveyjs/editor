@@ -10,7 +10,7 @@ import { QuestionConverter } from "../src/questionconverter";
 import { QuestionConvertMode, settings } from "../src/settings";
 
 test("get converted classes", () => {
-  settings.convertQuestionMode = QuestionConvertMode.CompatibleTypes;
+  settings.questionConvertMode = QuestionConvertMode.CompatibleTypes;
   var classes = QuestionConverter.getConvertToClasses("radiogroup");
   expect(classes.length >= 3).toBeTruthy();
   expect(classes.indexOf("dropdown") > -1).toBeTruthy();
@@ -21,7 +21,7 @@ test("get converted classes", () => {
 });
 
 test("get converted classes based on available types", () => {
-  settings.convertQuestionMode = QuestionConvertMode.CompatibleTypes;
+  settings.questionConvertMode = QuestionConvertMode.CompatibleTypes;
   var classes = QuestionConverter.getConvertToClasses("radiogroup", []);
   expect(classes.length >= 3).toBeTruthy();
   classes = QuestionConverter.getConvertToClasses("radiogroup", [
@@ -41,7 +41,7 @@ test("get converted classes based on available types", () => {
     "text"
   ]);
   expect(classes).toHaveLength(0);
-  settings.convertQuestionMode = QuestionConvertMode.AllTypes;
+  settings.questionConvertMode = QuestionConvertMode.AllTypes;
 });
 
 test("Convert question", () => {

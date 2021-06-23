@@ -13,7 +13,7 @@ export class QuestionConverter {
     className: string,
     availableTypes: Array<string> = null
   ): Array<string> {
-    var res = settings.convertQuestionMode == QuestionConvertMode.AllTypes
+    var res = settings.questionConvertMode == QuestionConvertMode.AllTypes
       ? getAllQuestionTypes(className)
       : QuestionConverter.convertInfo[className];
     if (!res) return [];
