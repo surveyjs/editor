@@ -11,6 +11,7 @@ import { SelectionHistory } from "../selection-history";
 import { SurveyHelper } from "../surveyHelper";
 import { ObjectSelectorModel } from "./object-selector";
 import { CreatorBase } from "../creator-base";
+import { editorLocalization } from "../editorLocalization";
 
 export class PropertyGridViewModel<T extends SurveyModel> extends Base {
   @property() survey: SurveyModel;
@@ -48,6 +49,8 @@ export class PropertyGridViewModel<T extends SurveyModel> extends Base {
       id: "svd-grid-hide",
       iconName: "icon-hide",
       component: "sv-action-bar-item",
+      title: editorLocalization.getString("ed.hide"),
+      showTitle: false,
       action: () => {
         this.creator.showPropertyGrid = false;
       }
@@ -56,6 +59,8 @@ export class PropertyGridViewModel<T extends SurveyModel> extends Base {
       id: "svd-grid-history-prev",
       iconName: "icon-prev",
       component: "sv-action-bar-item",
+      title: editorLocalization.getString("ed.previous"),
+      showTitle: false,
       enabled: () => this.hasPrev,
       action: () => {
         this.selectionController.prev();
@@ -65,6 +70,8 @@ export class PropertyGridViewModel<T extends SurveyModel> extends Base {
       id: "svd-grid-history-next",
       iconName: "icon-next",
       component: "sv-action-bar-item",
+      title: editorLocalization.getString("ed.next"),
+      showTitle: false,
       enabled: () => this.hasNext,
       action: () => {
         this.selectionController.next();
