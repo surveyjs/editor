@@ -11,7 +11,7 @@ import {
   Question
 } from "survey-core";
 import { CreatorBase } from "../creator-base";
-import { DragDropHelper } from "../dragdrophelper";
+import { DragDropHelper } from "survey-core";
 import { getLocString } from "../editorLocalization";
 import { QuestionConverter } from "../questionconverter";
 import { IPortableDragEvent, IPortableMouseEvent } from "../utils/events";

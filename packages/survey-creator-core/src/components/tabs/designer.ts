@@ -6,7 +6,7 @@ import {
   Action
 } from "survey-core";
 import { ICreatorPlugin, CreatorBase } from "../../creator-base";
-import { DragDropHelper } from "../../dragdrophelper";
+import { DragDropHelper } from "survey-core";
 import "./designer.scss";
 
 export class TabDesignerViewModel<T extends SurveyModel> extends Base {

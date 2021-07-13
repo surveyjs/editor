@@ -7,7 +7,7 @@ import {
   SurveyModel
 } from "survey-core";
 import { CreatorBase } from "../creator-base";
-import { DragDropHelper } from "../dragdrophelper";
+import { DragDropHelper } from "survey-core";
 import "./item-value.scss";
 
 export class ItemValueWrapperViewModel extends Base {
