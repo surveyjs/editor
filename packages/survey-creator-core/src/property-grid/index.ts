@@ -979,7 +979,15 @@ export class PropertyGridEditorBoolean extends PropertyGridEditor {
     };
   }
 }
-export class PropertyGridEditorString extends PropertyGridEditor {
+export abstract class PropertyGridEditorStringBase extends PropertyGridEditor {
+  protected updateMaxLength(prop: JsonObjectProperty, json: any): any {
+    if (prop.maxLength > 0) {
+      json.maxLength = prop.maxLength;
+    }
+    return json;
+  }
+}
+export class PropertyGridEditorString extends PropertyGridEditorStringBase {
   public fit(prop: JsonObjectProperty): boolean {
     return prop.type == "string";
   }
@@ -991,7 +999,7 @@ export class PropertyGridEditorString extends PropertyGridEditor {
     prop: JsonObjectProperty,
     options: ISurveyCreatorOptions
   ): any {
-    return { type: "text" };
+    return this.updateMaxLength(prop, { type: "text" });
   }
 }
 export class PropertyGridEditorNumber extends PropertyGridEditor {
@@ -1013,7 +1021,7 @@ export class PropertyGridEditorNumber extends PropertyGridEditor {
     return res;
   }
 }
-export class PropertyGridEditorText extends PropertyGridEditor {
+export class PropertyGridEditorText extends PropertyGridEditorStringBase {
   public fit(prop: JsonObjectProperty): boolean {
     return prop.type === "text";
   }
@@ -1022,10 +1030,13 @@ export class PropertyGridEditorText extends PropertyGridEditor {
     prop: JsonObjectProperty,
     options: ISurveyCreatorOptions
   ): any {
-    return { type: "comment", textUpdateMode: "onTyping" };
+    return this.updateMaxLength(prop, {
+      type: "comment",
+      textUpdateMode: "onTyping"
+    });
   }
 }
-export class PropertyGridEditorHtml extends PropertyGridEditor {
+export class PropertyGridEditorHtml extends PropertyGridEditorStringBase {
   public fit(prop: JsonObjectProperty): boolean {
     return prop.type === "html";
   }
@@ -1034,7 +1045,10 @@ export class PropertyGridEditorHtml extends PropertyGridEditor {
     prop: JsonObjectProperty,
     options: ISurveyCreatorOptions
   ): any {
-    return { type: "comment" };
+    return this.updateMaxLength(prop, {
+      type: "comment",
+      textUpdateMode: "onTyping"
+    });
   }
 }
 export class PropertyGridEditorColor extends PropertyGridEditor {

@@ -1788,3 +1788,19 @@ test("property editor show help as description", () => {
   actions[1].action();
   expect(defaultValueExpressionQuestion.descriptionLocation).toEqual("hidden");
 });
+test("Use maxLength property attribute", () => {
+  Serializer.findProperty("question", "name").maxLength = 10;
+  Serializer.findProperty("question", "title").maxLength = 20;
+  var question = new QuestionTextModel("q1");
+  var propertyGrid = new PropertyGridModelTester(question);
+  var nameQuestion = <QuestionTextModel>(
+    propertyGrid.survey.getQuestionByName("name")
+  );
+  expect(nameQuestion.getType()).toEqual("text");
+  expect(nameQuestion.maxLength).toEqual(10);
+  var titleQuestion = <QuestionTextModel>(
+    propertyGrid.survey.getQuestionByName("title")
+  );
+  expect(titleQuestion.getType()).toEqual("comment");
+  expect(titleQuestion.maxLength).toEqual(20);
+});
